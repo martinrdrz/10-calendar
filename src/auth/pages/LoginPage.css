@@ -1,12 +1,10 @@
 .login-container {
-    margin-top: 5%;
-    max-width: 900px; /* Asegura que los campos de texto ocupen el 100% del ancho del formulario */
+    margin-top: 10%;
 }
 .login-form-1 {
     border-radius: 5px;
     box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
     padding: 5%;
-    width: 100%;
 }
 .login-form-1 h3 {
     text-align: center;
@@ -17,7 +15,6 @@
     box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
     padding: 5%;
     background: #0062cc;
-    width: 100%;
 }
 .login-form-2 h3 {
     text-align: center;
@@ -25,17 +22,13 @@
 }
 .login-container form {
     padding: 10%;
-    width: 100%;
-}
-.form-control {
-    width: 100%; /* Asegura que los campos de texto ocupen el 100% del ancho del formulario */
 }
 .btnSubmit {
-    width: 100%;
     border-radius: 1rem;
     padding: 1.5%;
     border: none;
     cursor: pointer;
+    margin: 0px 0px;
 }
 .login-form-1 .btnSubmit {
     color: #fff;
