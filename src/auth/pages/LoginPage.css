@@ -1,5 +1,6 @@
 .login-container {
     margin-top: 10%;
+    max-width: 1000px;
 }
 .login-form-1 {
     border-radius: 5px;
