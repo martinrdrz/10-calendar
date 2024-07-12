@@ -1,5 +1,7 @@
-import { useForm } from '../../hooks';
+import Swal from 'sweetalert2';
+import { useAuthStore, useForm } from '../../hooks';
 import './LoginPage.css';
+import { useEffect } from 'react';
 
 const loginFormFields = {
     loginEmail: '',
@@ -14,99 +16,110 @@ const registerFormFields = {
 };
 
 export const LoginPage = () => {
+    const { startLogin, startRegister, errorMessage } = useAuthStore();
     const { loginEmail, loginPassword, onInputChange: onLoginInputChange } = useForm(loginFormFields);
     const { registerName, registerEmail, registerPassword, registerPassword2, onInputChange } =
         useForm(registerFormFields);
 
     const loginSubmit = (event) => {
         event.preventDefault();
-        console.log({ loginEmail, loginPassword });
+        startLogin({ email: loginEmail, password: loginPassword });
     };
 
     const registerSubmit = (event) => {
         event.preventDefault();
-        console.log({ registerName, registerEmail, registerPassword, registerPassword2 });
+        if (registerPassword !== registerPassword2) {
+            Swal.fire('Error en registro', 'Contraseñas no son iguales', 'error');
+            return;
+        }
+        startRegister({ name: registerName, email: registerEmail, password: registerPassword });
     };
 
+    useEffect(() => {
+        if (errorMessage !== undefined) {
+            Swal.fire('Error en la autenticacion', errorMessage, 'error');
+        }
+    }, [errorMessage]);
+
     return (
-        <div className='container login-container'>
-            <div className='row'>
-                <div className='col-md-6 login-form-1'>
+        <div className="container login-container">
+            <div className="row">
+                <div className="col-md-6 login-form-1">
                     <h3>Ingreso</h3>
                     <form onSubmit={loginSubmit}>
-                        <div className='form-group mb-2'>
+                        <div className="form-group mb-2">
                             <input
-                                type='text'
-                                className='form-control'
-                                placeholder='Correo'
-                                name='loginEmail'
+                                type="text"
+                                className="form-control"
+                                placeholder="Correo"
+                                name="loginEmail"
                                 value={loginEmail}
                                 onChange={onLoginInputChange}
                             />
                         </div>
-                        <div className='form-group mb-2'>
+                        <div className="form-group mb-2">
                             <input
-                                type='password'
-                                className='form-control'
-                                placeholder='Contraseña'
-                                name='loginPassword'
+                                type="password"
+                                className="form-control"
+                                placeholder="Contraseña"
+                                name="loginPassword"
                                 value={loginPassword}
                                 onChange={onLoginInputChange}
                             />
                         </div>
-                        <div className='d-grid gap-2'>
-                            <input type='submit' className='btnSubmit' value='Login' />
+                        <div className="d-grid gap-2">
+                            <input type="submit" className="btnSubmit" value="Login" />
                         </div>
                     </form>
                 </div>
 
-                <div className='col-md-6 login-form-2'>
+                <div className="col-md-6 login-form-2">
                     <h3>Registro</h3>
                     <form onSubmit={registerSubmit}>
-                        <div className='form-group mb-2'>
+                        <div className="form-group mb-2">
                             <input
-                                type='text'
-                                className='form-control'
-                                placeholder='Nombre'
-                                name='registerName'
+                                type="text"
+                                className="form-control"
+                                placeholder="Nombre"
+                                name="registerName"
                                 value={registerName}
                                 onChange={onInputChange}
                             />
                         </div>
-                        <div className='form-group mb-2'>
+                        <div className="form-group mb-2">
                             <input
-                                type='email'
-                                className='form-control'
-                                placeholder='Correo'
-                                name='registerEmail'
+                                type="email"
+                                className="form-control"
+                                placeholder="Correo"
+                                name="registerEmail"
                                 value={registerEmail}
                                 onChange={onInputChange}
                             />
                         </div>
-                        <div className='form-group mb-2'>
+                        <div className="form-group mb-2">
                             <input
-                                type='password'
-                                className='form-control'
-                                placeholder='Contraseña'
-                                name='registerPassword'
+                                type="password"
+                                className="form-control"
+                                placeholder="Contraseña"
+                                name="registerPassword"
                                 value={registerPassword}
                                 onChange={onInputChange}
                             />
                         </div>
 
-                        <div className='form-group mb-2'>
+                        <div className="form-group mb-2">
                             <input
-                                type='password'
-                                className='form-control'
-                                placeholder='Repita la contraseña'
-                                name='registerPassword2'
+                                type="password"
+                                className="form-control"
+                                placeholder="Repita la contraseña"
+                                name="registerPassword2"
                                 value={registerPassword2}
                                 onChange={onInputChange}
                             />
                         </div>
 
-                        <div className='d-grid gap-2'>
-                            <input type='submit' className='btnSubmit' value='Crear cuenta' />
+                        <div className="d-grid gap-2">
+                            <input type="submit" className="btnSubmit" value="Crear cuenta" />
                         </div>
                     </form>
                 </div>

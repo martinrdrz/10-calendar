@@ -1,11 +1,41 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { calendarApi } from '../api';
+import { checking, clearErrorMesage, onLogin, onLogout } from '../store';
 
 export const useAuthStore = () => {
     const { status, user, errorMessage } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
     const startLogin = async ({ email, password }) => {
-        console.log({ email, password });
+        dispatch(checking());
+        try {
+            const { data } = await calendarApi.post('/auth', { email, password });
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('token-init-date', new Date().getTime());
+            dispatch(onLogin({ name: data.name, uid: data.uid }));
+        } catch (error) {
+            dispatch(onLogout('Credenciales incorrectas'));
+            setTimeout(() => {
+                dispatch(clearErrorMesage());
+            }, 20);
+        }
+    };
+
+    const startRegister = async ({ name, email, password }) => {
+        dispatch(checking());
+        try {
+            const { data } = await calendarApi.post('/auth/new', { name, email, password });
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('token-init-date', new Date().getTime());
+            dispatch(onLogin({ name: data.name, uid: data.uid }));
+        } catch (error) {
+            console.log({ error });
+            //dispatch(onLogout(error.response.data ? error.response.data.msg : 'consulta exitosa'));
+            dispatch(onLogout(error.response.data ? 'Verifique los datos ingresados' : '---'));
+            setTimeout(() => {
+                dispatch(clearErrorMesage());
+            }, 20);
+        }
     };
 
     return {
@@ -16,5 +46,6 @@ export const useAuthStore = () => {
 
         //Metodos
         startLogin,
+        startRegister,
     };
 };
